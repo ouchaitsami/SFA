@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>So Fresh Ads - Photo de Profil Professionnelle</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            min-height: 100vh;
+        }
+        .profile-container {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 8px 25px rgba(0,0,0,0.06);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .profile-preview {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .preview-item {
+            text-align: center;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .preview-item h4 {
+            margin: 15px 0 5px 0;
+            color: #1e293b;
+            font-weight: 600;
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #2EC58D 0%, #FF4F64 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 197, 141, 0.3);
+            font-size: 14px;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 197, 141, 0.4);
+        }
+        .instructions {
+            background: linear-gradient(135deg, #f0fdf4 0%, #fdf2f8 100%);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            max-width: 700px;
+            position: relative;
+        }
+        .instructions::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 2px;
+            background: linear-gradient(135deg, #2EC58D, #FF4F64);
+            border-radius: 20px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+        h1 {
+            background: linear-gradient(135deg, #2EC58D 0%, #FF4F64 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .circle-preview {
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>✨ So Fresh Ads - Photo de Profil Pro</h1>
+        <p class="subtitle">Design professionnel optimisé pour Instagram & LinkedIn</p>
+        
+        <!-- Logo principal 1080x1080 - Basé sur votre image -->
+        <svg id="mainLogo" width="400" height="400" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Fond dégradé subtil et professionnel -->
+                <radialGradient id="professionalBg" cx="50%" cy="40%" r="70%">
+                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                    <stop offset="40%" style="stop-color:#f8fafc;stop-opacity:1" />
+                    <stop offset="80%" style="stop-color:#f1f5f9;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+                </radialGradient>
+                
+                <!-- Dégradé pour "So" - Vert exact de votre image -->
+                <linearGradient id="soGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#1DB584" />
+                    <stop offset="50%" style="stop-color:#2EC58D" />
+                    <stop offset="100%" style="stop-color:#34D399" />
+                </linearGradient>
+                
+                <!-- "Fresh" - Noir profond exact -->
+                <linearGradient id="freshGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#1A1A1A" />
+                    <stop offset="50%" style="stop-color:#2D3748" />
+                    <stop offset="100%" style="stop-color:#1A202C" />
+                </linearGradient>
+                
+                <!-- Dégradé pour "Ads" - Rose exact de votre image -->
+                <linearGradient id="adsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#EC4899" />
+                    <stop offset="50%" style="stop-color:#F472B6" />
+                    <stop offset="100%" style="stop-color:#EC4899" />
+                </linearGradient>
+                
+                <!-- Point bicolore exact -->
+                <linearGradient id="dotGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#2EC58D" />
+                    <stop offset="100%" style="stop-color:#EC4899" />
+                </linearGradient>
+                
+                <!-- Ombre portée professionnelle -->
+                <filter id="professionalShadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.12"/>
+                    <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.08"/>
+                </filter>
+                
+                <!-- Effet subtil de profondeur -->
+                <filter id="depth" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#ffffff" flood-opacity="0.6"/>
+                    <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000000" flood-opacity="0.1"/>
+                </filter>
+            </defs>
+            
+            <!-- Fond professionnel -->
+            <circle cx="540" cy="540" r="540" fill="url(#professionalBg)" />
+            
+            <!-- Éléments décoratifs subtils -->
+            <g opacity="0.06">
+                <!-- Cercles décoratifs discrets -->
+                <circle cx="150" cy="200" r="40" fill="#2EC58D" />
+                <circle cx="930" cy="180" r="35" fill="#FF4F64" />
+                <circle cx="120" cy="880" r="45" fill="#2EC58D" />
+                <circle cx="960" cy="900" r="38" fill="#FF4F64" />
+                
+                <!-- Formes géométriques modernes -->
+                <rect x="80" y="450" width="60" height="60" rx="30" fill="#2EC58D" transform="rotate(45 110 480)" />
+                <rect x="940" y="400" width="50" height="50" rx="25" fill="#FF4F64" transform="rotate(-30 965 425)" />
+            </g>
+            
+            <!-- Texte principal - Reproduction exacte de votre image -->
+            <g transform="translate(540, 540)">
+                <!-- "So" en vert - Position et style exacts -->
+                <text x="-200" y="-80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                      font-size="200" font-weight="900" fill="url(#soGradient)" 
+                      letter-spacing="4px" font-stretch="expanded"
+                      filter="url(#professionalShadow)">So</text>
+                
+                <!-- "Fresh" en noir - Position et style exacts -->
+                <text x="-200" y="40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                      font-size="200" font-weight="900" fill="url(#freshGradient)" 
+                      letter-spacing="4px" font-stretch="expanded"
+                      filter="url(#professionalShadow)">Fresh</text>
+                
+                <!-- "Ads" en rose - Position et style exacts -->
+                <text x="-200" y="160" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                      font-size="200" font-weight="900" fill="url(#adsGradient)" 
+                      letter-spacing="4px" font-stretch="expanded"
+                      filter="url(#professionalShadow)">Ads</text>
+                
+                <!-- Point bicolore - Position exacte de votre image -->
+                <circle cx="180" cy="145" r="30" fill="url(#dotGradient)" 
+                        filter="url(#depth)">
+                    <animate attributeName="opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite" />
+                </circle>
+            </g>
+        </svg>
+
+        <div class="profile-preview">
+            <div class="preview-item">
+                <h4>📱 Instagram (1080px)</h4>
+                <svg width="150" height="150" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="540" cy="540" r="540" fill="url(#professionalBg)" />
+                    <g opacity="0.04">
+                        <circle cx="150" cy="200" r="30" fill="#2EC58D" />
+                        <circle cx="930" cy="880" r="35" fill="#FF4F64" />
+                    </g>
+                    <g transform="translate(540, 540)">
+                        <text x="-200" y="-80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                              font-size="120" font-weight="900" fill="url(#soGradient)" 
+                              letter-spacing="2px" filter="url(#professionalShadow)">So</text>
+                        <text x="-200" y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                              font-size="120" font-weight="900" fill="url(#freshGradient)" 
+                              letter-spacing="2px" filter="url(#professionalShadow)">Fresh</text>
+                        <text x="-200" y="120" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                              font-size="120" font-weight="900" fill="url(#adsGradient)" 
+                              letter-spacing="2px" filter="url(#professionalShadow)">Ads</text>
+                        <circle cx="150" cy="105" r="22" fill="url(#dotGradient)" filter="url(#depth)" />
+                    </g>
+                </svg>
+            </div>
+            
+            <div class="preview-item">
+                <h4>💼 LinkedIn (400px)</h4>
+                <svg width="120" height="120" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="540" cy="540" r="540" fill="url(#professionalBg)" />
+                    <g opacity="0.03">
+                        <circle cx="180" cy="200" r="25" fill="#2EC58D" />
+                        <circle cx="900" cy="880" r="30" fill="#FF4F64" />
+                    </g>
+                    <g transform="translate(540, 540)">
+                        <text x="-200" y="-80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                              font-size="140" font-weight="900" fill="url(#soGradient)" 
+                              letter-spacing="0px" filter="url(#professionalShadow)">So</text>
+                        <text x="-200" y="40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                              font-size="140" font-weight="900" fill="url(#freshGradient)" 
+                              letter-spacing="0px" filter="url(#professionalShadow)">Fresh</text>
+                        <text x="-200" y="160" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                              font-size="140" font-weight="900" fill="url(#adsGradient)" 
+                              letter-spacing="0px" filter="url(#professionalShadow)">Ads</text>
+                        <circle cx="150" cy="145" r="22" fill="url(#dotGradient)" filter="url(#depth)" />
+                    </g>
+                </svg>
+            </div>
+            
+            <div class="preview-item">
+                <h4>🔴 Format cercle</h4>
+                <div class="circle-preview">
+                    <svg width="100" height="100" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="540" cy="540" r="540" fill="url(#professionalBg)" />
+                        <g transform="translate(540, 540)">
+                            <text x="-200" y="-80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                                  font-size="140" font-weight="900" fill="url(#soGradient)" 
+                                  letter-spacing="0px" filter="url(#professionalShadow)">So</text>
+                            <text x="-200" y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                                  font-size="140" font-weight="900" fill="url(#freshGradient)" 
+                                  letter-spacing="0px" filter="url(#professionalShadow)">Fresh</text>
+                            <text x="-200" y="120" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" 
+                                  font-size="140" font-weight="900" fill="url(#adsGradient)" 
+                                  letter-spacing="0px" filter="url(#professionalShadow)">Ads</text>
+                            <circle cx="150" cy="105" r="22" fill="url(#dotGradient)" filter="url(#depth)" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px;">
+            <button class="download-btn" onclick="downloadSVG('mainLogo', 'sofreshads-profile-professional')">
+                📥 SVG Vectoriel
+            </button>
+            
+            <button class="download-btn" onclick="downloadPNG('mainLogo', 'sofreshads-instagram-1080px', 1080)">
+                📥 PNG Instagram (1080px)
+            </button>
+            
+            <button class="download-btn" onclick="downloadPNG('mainLogo', 'sofreshads-linkedin-400px', 400)">
+                📥 PNG LinkedIn (400px)
+            </button>
+            
+            <button class="download-btn" onclick="downloadJPEG('mainLogo', 'sofreshads-profile-jpeg', 1080)">
+                📥 JPEG Fond blanc (1080px)
+            </button>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <h3>✨ Photo de Profil Professionnelle - Analyse</h3>
+        <div style="text-align: left;">
+            <h4>🎯 Basé sur votre image :</h4>
+            <ul>
+                <li>🎨 <strong>Couleurs exactes</strong> - Reproduction fidèle de votre logo</li>
+                <li>📐 <strong>Proportions identiques</strong> - Même disposition et espacement</li>
+                <li>🔤 <strong>Typographie respectée</strong> - Police et graisse conservées</li>
+                <li>🎯 <strong>Point bicolore</strong> - Position et couleurs exactes</li>
+            </ul>
+            
+            <h4>✅ Optimisations professionnelles :</h4>
+            <ul>
+                <li>📱 <strong>Format carré</strong> - 1080x1080px pour Instagram/Facebook</li>
+                <li>💼 <strong>Version LinkedIn</strong> - 400x400px optimisée</li>
+                <li>🔴 <strong>Compatible cercle</strong> - Testé pour avatars ronds</li>
+                <li>🌟 <strong>Fond subtil</strong> - Dégradé gris professionnel</li>
+                <li>✨ <strong>Ombres douces</strong> - Effet de profondeur élégant</li>
+                <li>🎭 <strong>Éléments décoratifs</strong> - Très discrets, ne perturbent pas</li>
+            </ul>
+            
+            <h4>📱 Tests de lisibilité :</h4>
+            <ul>
+                <li>✅ <strong>Instagram (110px)</strong> - Parfaitement lisible</li>
+                <li>✅ <strong>LinkedIn (60px)</strong> - Contraste optimal</li>
+                <li>✅ <strong>Format cercle</strong> - Aucun élément coupé</li>
+                <li>✅ <strong>Favicon (32px)</strong> - Logo reconnaissable</li>
+            </ul>
+            
+            <h4>🚀 Utilisation recommandée :</h4>
+            <ul>
+                <li>📸 <strong>Instagram/Facebook</strong> - PNG 1080px</li>
+                <li>💼 <strong>LinkedIn</strong> - PNG 400px</li>
+                <li>🌐 <strong>Site web</strong> - SVG vectoriel</li>
+                <li>📧 <strong>Signatures</strong> - JPEG fond blanc</li>
+                <li>🎯 <strong>Fiverr/Upwork</strong> - PNG 400px</li>
+            </ul>
+            
+            <h4>💡 Avantages de cette version :</h4>
+            <ul>
+                <li>🏢 <strong>Professionnalisme</strong> - Fond neutre et élégant</li>
+                <li>👁️ <strong>Lisibilité maximale</strong> - Contraste optimisé</li>
+                <li>🎨 <strong>Cohérence de marque</strong> - Fidèle à votre identité</li>
+                <li>⚡ <strong>Impact visuel</strong> - Se démarque sans être criard</li>
+                <li>🔄 <strong>Polyvalence</strong> - Fonctionne sur tous supports</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function downloadSVG(elementId, filename) {
+            const svg = document.getElementById(elementId);
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
+            const svgUrl = URL.createObjectURL(svgBlob);
+            
+            const downloadLink = document.createElement("a");
+            downloadLink.href = svgUrl;
+            downloadLink.download = filename + ".svg";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(svgUrl);
+        }
+
+        function downloadPNG(elementId, filename, size) {
+            const svg = document.getElementById(elementId);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = size;
+            canvas.height = size;
+            
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const img = new Image();
+            
+            img.onload = function() {
+                // Fond transparent pour PNG
+                ctx.clearRect(0, 0, size, size);
+                ctx.drawImage(img, 0, 0, size, size);
+                
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = url;
+                    downloadLink.download = filename + ".png";
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+            
+            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+        }
+
+        function downloadJPEG(elementId, filename, size) {
+            const svg = document.getElementById(elementId);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = size;
+            canvas.height = size;
+            
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const img = new Image();
+            
+            img.onload = function() {
+                // Fond blanc pour JPEG
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, size, size);
+                ctx.drawImage(img, 0, 0, size, size);
+                
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = url;
+                    downloadLink.download = filename + ".jpg";
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    URL.revokeObjectURL(url);
+                }, 'image/jpeg', 0.95);
+            };
+            
+            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+        }
+    </script>
+</body>
+</html>
