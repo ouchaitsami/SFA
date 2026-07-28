@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-const FROM_EMAIL = Deno.env.get('LEADS_FROM_EMAIL') ?? 'So Fresh Ads <onboarding@resend.dev>';
+const FROM_EMAIL = 'So Fresh Ads <onboarding@resend.dev>';
 const NOTIFY_EMAIL = Deno.env.get('LEADS_NOTIFY_EMAIL') ?? '';
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 const WEBHOOK_SECRET = Deno.env.get('LEADS_WEBHOOK_SECRET') ?? '';
@@ -69,21 +69,24 @@ function internalNotificationHtml(record: LeadData): string {
 </html>`;
 }
 
-async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
+async function sendEmail(to: string, subject: string, html: string): Promise<{ ok: boolean; detail: string }> {
+  const payload = { from: FROM_EMAIL, to: [to], subject, html };
+  console.log('Resend request:', JSON.stringify({ from: FROM_EMAIL, to: [to], subject }));
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ from: FROM_EMAIL, to, subject, html }),
+    body: JSON.stringify(payload),
   });
+  const body = await res.text();
   if (!res.ok) {
-    const errText = await res.text();
-    console.error(`Resend error (${res.status}):`, errText);
-    return false;
+    console.error(`Resend error (${res.status}):`, body);
+    return { ok: false, detail: body };
   }
-  return true;
+  console.log('Resend success:', body);
+  return { ok: true, detail: body };
 }
 
 Deno.serve(async (req: Request) => {
@@ -131,28 +134,28 @@ Deno.serve(async (req: Request) => {
 
   const firstName = fullName.split(/\s+/)[0] || fullName;
 
-  const confirmationOk = await sendEmail(
+  const confirmation = await sendEmail(
     email,
     "Votre audit gratuit So Fresh Ads est en cave",
     confirmationEmailHtml(firstName),
   );
 
-  let notificationOk = true;
+  let notification = { ok: true, detail: '' };
   if (NOTIFY_EMAIL) {
-    notificationOk = await sendEmail(
+    notification = await sendEmail(
       NOTIFY_EMAIL,
       `Nouveau lead : ${fullName}`,
       internalNotificationHtml(data),
     );
   }
 
-  if (!confirmationOk) {
-    return new Response(JSON.stringify({ error: 'Email send failed' }), { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+  if (!confirmation.ok) {
+    return new Response(JSON.stringify({ error: 'Email send failed', detail: confirmation.detail }), { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   }
 
-  if (!notificationOk) {
-    console.error('Internal notification failed but confirmation was sent');
+  if (!notification.ok) {
+    console.error('Internal notification failed:', notification.detail);
   }
 
-  return new Response(JSON.stringify({ success: true }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+  return new Response(JSON.stringify({ success: true, confirmation: confirmation.detail, notification: notification.ok }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 });
