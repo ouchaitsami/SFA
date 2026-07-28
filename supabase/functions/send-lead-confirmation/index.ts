@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-const FROM_EMAIL = 'So Fresh Ads <onboarding@resend.dev>';
+const FROM_EMAIL = 'So Fresh Ads <hello@sofreshads.com>';
 const NOTIFY_EMAIL = Deno.env.get('LEADS_NOTIFY_EMAIL') ?? '';
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 const WEBHOOK_SECRET = Deno.env.get('LEADS_WEBHOOK_SECRET') ?? '';
