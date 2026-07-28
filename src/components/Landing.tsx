@@ -505,4 +505,269 @@ function CheersModal({ onClose }: { onClose: () => void }) {
 
         <div className="relative flex items-center justify-center h-24 mb-5">
           <motion.div
-            className="absolute w-12 h-16
+            className="absolute w-12 h-16 sm:w-14 sm:h-[4.5rem] text-raspberry"
+            initial={glassLeft.initial}
+            animate={glassLeft.animate}
+            transition={prefers ? { duration: 0.3 } : { type: 'spring', stiffness: 170, damping: 13, delay: 0.15 }}
+          >
+            <WineGlassIcon className="w-full h-full" />
+          </motion.div>
+          <motion.div
+            className="absolute w-12 h-16 sm:w-14 sm:h-[4.5rem] text-lime"
+            style={{ transform: 'scaleX(-1)' }}
+            initial={glassRight.initial}
+            animate={glassRight.animate}
+            transition={prefers ? { duration: 0.3 } : { type: 'spring', stiffness: 170, damping: 13, delay: 0.15 }}
+          >
+            <WineGlassIcon className="w-full h-full" />
+          </motion.div>
+          {!prefers && (
+            <motion.div
+              className="absolute text-raspberry-soft"
+              initial={{ opacity: 0, scale: 0.3 }}
+              animate={{ opacity: [0, 1, 0], scale: [0.3, 1.4, 1] }}
+              transition={{ delay: 0.55, duration: 0.55, ease: 'easeOut' }}
+            >
+              <SparkIcon className="w-7 h-7" />
+            </motion.div>
+          )}
+        </div>
+
+        <h3 className="font-display text-2xl sm:text-[1.7rem] text-ink mb-2">Santé !</h3>
+        <p className="font-serif-italic text-slate600 text-[15px] sm:text-base leading-relaxed">
+          Votre demande est en cave. Nous revenons vers vous sous 24h.
+        </p>
+      </motion.div>
+    </motion.div>,
+    document.body
+  );
+}
+
+function ContactForm() {
+  const reveal = useReveal();
+  const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+  const [form, setForm] = useState({ full_name: '', email: '', website: '', budget: '' });
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    setState('loading');
+
+    let captchaToken: string | null = null;
+    if (RECAPTCHA_SITE_KEY && executeRecaptcha) {
+      try {
+        captchaToken = await executeRecaptcha('contact_form');
+      } catch {
+        setState('error');
+        return;
+      }
+      if (!captchaToken) {
+        setState('error');
+        return;
+      }
+    }
+
+    const { error } = await supabase.from('leads').insert({
+      full_name: form.full_name,
+      email: form.email,
+      website: form.website,
+      budget: form.budget,
+      captcha_token: captchaToken,
+    });
+    if (error) {
+      setState('error');
+      return;
+    }
+
+    supabase.functions.invoke('send-lead-confirmation', {
+      body: { full_name: form.full_name, email: form.email, website: form.website, budget: form.budget },
+    }).catch(() => {});
+
+    window.gtag?.('event', 'generate_lead', {
+      event_category: 'engagement',
+      event_label: 'contact_form',
+      value: 1,
+    });
+    if (GOOGLE_ADS_SEND_TO) {
+      window.gtag?.('event', 'conversion', { send_to: GOOGLE_ADS_SEND_TO });
+    }
+    setState('done');
+    setForm({ full_name: '', email: '', website: '', budget: '' });
+  }
+
+  return (
+    <section id="contact" className="relative py-16 sm:py-28">
+      <div className="blob bg-lime-soft w-[320px] h-[320px] md:w-[500px] md:h-[500px] left-[-80px] md:left-[-100px] top-10 opacity-40" />
+      <div className="blob bg-raspberry-soft w-[240px] h-[240px] md:w-[360px] md:h-[360px] right-[-40px] md:right-[-60px] bottom-0 opacity-30" />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <motion.div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14" {...reveal}>
+          <p className="font-serif-italic text-slate600 text-base sm:text-lg mb-2">Service à la commande</p>
+          <Ornament className="mx-auto text-ink/35 my-4" width="w-32 sm:w-44" />
+          <h2 className="font-display text-3xl sm:text-4xl md:text-6xl text-ink leading-[1.1]">
+            Analysez le potentiel de vos <em className="grad-text font-serif-italic">campagnes</em>
+          </h2>
+          <p className="mt-4 sm:mt-5 font-serif-italic text-slate600 text-base sm:text-lg">
+            Nos alchimistes vous préparent un audit sur-mesure en moins de 24h.
+          </p>
+        </motion.div>
+
+        <motion.form
+          {...reveal}
+          onSubmit={onSubmit}
+          className="glass rounded-[1.5rem] sm:rounded-[2.5rem] p-6 sm:p-10 md:p-14"
+        >
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 sm:gap-y-7">
+            <div>
+              <label className="block text-[10px] uppercase tracking-[0.28em] text-slate600 mb-2 font-medium">
+                Nom complet
+              </label>
+              <input
+                required
+                className="input-line"
+                placeholder="Votre nom"
+                value={form.full_name}
+                onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase tracking-[0.28em] text-slate600 mb-2 font-medium">
+                Email professionnel
+              </label>
+              <input
+                required
+                type="email"
+                className="input-line"
+                placeholder="vous@entreprise.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase tracking-[0.28em] text-slate600 mb-2 font-medium">
+                Site web
+              </label>
+              <input
+                required
+                className="input-line"
+                placeholder="https://votresite.com"
+                value={form.website}
+                onChange={(e) => setForm({ ...form, website: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] uppercase tracking-[0.28em] text-slate600 mb-2 font-medium">
+                Budget mensuel alloué
+              </label>
+              <select
+                required
+                className="input-line bg-transparent"
+                value={form.budget}
+                onChange={(e) => setForm({ ...form, budget: e.target.value })}
+              >
+                <option value="">Choisir une gamme</option>
+                <option value="500-2000">500€ – 2 000€</option>
+                <option value="2000-5000">2 000€ – 5 000€</option>
+                <option value="5000-10000">5 000€ – 10 000€</option>
+                <option value="10000+">+ 10 000€</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="my-10 text-center text-ink/25">
+            <Flourish className="w-32 h-4 mx-auto" />
+          </div>
+
+          <div className="flex flex-col items-center gap-4">
+            <motion.button
+              type="submit"
+              disabled={state === 'loading'}
+              whileHover={{ scale: state === 'loading' ? 1 : 1.02 }}
+              whileTap={{ scale: state === 'loading' ? 1 : 0.98 }}
+              className="cta-liquid inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-4 rounded-full text-ice font-medium shadow-cta disabled:opacity-60 text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.2em] text-center"
+            >
+              {state === 'loading' ? 'Distillation en cours…' : 'Recevoir mon audit gratuit'}
+              {state !== 'loading' && <ArrowRightIcon className="w-4 h-4" />}
+            </motion.button>
+            <p className="text-xs sm:text-sm text-slate600 text-center leading-relaxed">
+              Analyse sur mesure <span className="mx-2 text-ink/20">◆</span> Sans engagement
+              <span className="mx-2 text-ink/20">◆</span> Données sécurisées
+            </p>
+            {RECAPTCHA_SITE_KEY && (
+              <p className="text-[10px] text-slate600/70 font-light max-w-md text-center">
+                Ce site est protégé par reCAPTCHA. Les{' '}
+                <a href="https://policies.google.com/privacy" className="underline" target="_blank" rel="noreferrer">règles de confidentialité</a>{' '}
+                et les{' '}
+                <a href="https://policies.google.com/terms" className="underline" target="_blank" rel="noreferrer">conditions d'utilisation</a>{' '}
+                de Google s'appliquent.
+              </p>
+            )}
+            {state === 'done' && (
+              <AnimatePresence>
+                <CheersModal onClose={() => setState('idle')} />
+              </AnimatePresence>
+            )}
+            {state === 'error' && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="font-serif-italic text-raspberry mt-2"
+              >
+                Un petit grain dans la mécanique. Merci de réessayer dans un instant.
+              </motion.p>
+            )}
+          </div>
+        </motion.form>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="relative border-t border-ink/10 py-8 sm:py-10 mt-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-5 md:gap-4 text-sm text-slate600">
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center">
+          <SoFreshAdsLogo className="text-xl" />
+          <span className="text-ink/20 hidden sm:inline">◆</span>
+          <span className="font-serif-italic text-xs sm:text-sm">Cocktails de campagnes publicitaires</span>
+        </div>
+        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-7 uppercase tracking-[0.2em] sm:tracking-[0.22em] text-[10px] sm:text-[11px]">
+          <a href="#services" className="nav-link hover:text-ink">Carte</a>
+          <a href="#contact" className="nav-link hover:text-ink">Réservation</a>
+          <span>© {new Date().getFullYear()}</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function LandingContent() {
+  return (
+    <div className="relative min-h-screen bg-ice overflow-x-hidden">
+      <div className="glow-teal" />
+      <div className="glow-plum" />
+      <Nav />
+      <Hero />
+      <Chiffres />
+      <Services />
+      <ContactForm />
+      <Footer />
+      <ConsentBanner />
+    </div>
+  );
+}
+
+export default function Landing() {
+  if (!RECAPTCHA_SITE_KEY) {
+    return <LandingContent />;
+  }
+  return (
+    <GoogleReCaptchaProvider
+      reCaptchaKey={RECAPTCHA_SITE_KEY}
+      scriptProps={{ async: true, defer: true, appendTo: 'head' }}
+    >
+      <LandingContent />
+    </GoogleReCaptchaProvider>
+  );
+}
