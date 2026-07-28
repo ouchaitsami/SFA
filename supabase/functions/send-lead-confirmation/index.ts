@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 const FROM_EMAIL = 'So Fresh Ads <hello@sofreshads.com>';
-const NOTIFY_EMAIL = 'sofreshads@gmail.com';
+const NOTIFY_EMAIL = Deno.env.get('LEADS_NOTIFY_EMAIL') ?? '';
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 const WEBHOOK_SECRET = Deno.env.get('LEADS_WEBHOOK_SECRET') ?? '';
 
@@ -22,28 +22,58 @@ interface LeadData {
 function confirmationEmailHtml(firstName: string): string {
   return `<!doctype html>
 <html lang="fr">
-<body style="margin:0;padding:0;background:#FAF7F2;font-family:Arial,Helvetica,sans-serif;color:#1A1410;">
-  <div style="max-width:520px;margin:0 auto;padding:40px 24px;">
-    <div style="text-align:center;margin-bottom:32px;">
-      <span style="font-family:Georgia,serif;font-style:italic;font-weight:600;color:#1E7268;font-size:22px;">So</span><span style="font-family:Georgia,serif;font-weight:700;color:#1A1410;font-size:22px;">Fresh</span><span style="font-family:Georgia,serif;font-style:italic;font-weight:600;color:#A61D5A;font-size:22px;">Ads</span>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>So Fresh Ads</title>
+<!--[if mso]>
+<style>
+  .sfa-serif { font-family: Georgia, 'Times New Roman', serif !important; }
+</style>
+<![endif]-->
+</head>
+<body style="margin:0;padding:0;background:#FAF7F2;font-family:'Inter',Helvetica,Arial,sans-serif;color:#1A1410;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Votre demande est en cave. Nous revenons vers vous sous 24h.</div>
+  <div style="max-width:560px;margin:0 auto;padding:48px 24px;">
+
+    <div style="text-align:center;margin-bottom:28px;">
+      <span class="sfa-serif" style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;color:#1E7268;font-size:24px;">So</span><span class="sfa-serif" style="font-family:'Playfair Display',Georgia,serif;font-weight:700;color:#1A1410;font-size:24px;">Fresh</span><span class="sfa-serif" style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;color:#A61D5A;font-size:24px;">Ads</span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#A61D5A;margin-left:4px;"></span>
     </div>
-    <div style="background:#ffffff;border:1px solid rgba(26,20,16,0.1);border-radius:16px;padding:32px;">
-      <p style="font-size:16px;line-height:1.6;margin:0 0 16px;">Bonjour ${firstName},</p>
-      <p style="font-size:16px;line-height:1.6;margin:0 0 16px;">
+
+    <div style="text-align:center;margin-bottom:24px;">
+      <span style="display:inline-block;border:1px solid rgba(26,20,16,0.15);background:#ffffff;border-radius:999px;padding:6px 18px;font-size:10px;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;color:rgba(26,20,16,0.8);">Audit gratuit reçu</span>
+    </div>
+
+    <div style="background:#ffffff;border:1px solid rgba(26,20,16,0.1);border-radius:28px;padding:40px 32px;text-align:center;">
+      <div style="font-size:34px;line-height:1;margin-bottom:18px;">🥂</div>
+
+      <h1 class="sfa-serif" style="font-family:'Playfair Display',Georgia,serif;font-weight:700;color:#1A1410;font-size:26px;margin:0 0 12px;">
+        Santé, ${firstName} !
+      </h1>
+
+      <p class="sfa-serif" style="font-family:'Playfair Display',Georgia,serif;font-style:italic;color:#6B5F53;font-size:16px;line-height:1.7;margin:0 0 20px;">
         Votre demande d'audit gratuit est bien arriv&eacute;e en cave. Nos alchimistes l'examinent
         et reviennent vers vous sous 24h avec une premi&egrave;re lecture de vos campagnes.
       </p>
-      <p style="font-size:16px;line-height:1.6;margin:0 0 16px;">
-        Si vous avez un lien direct vers vos comptes Google Ads ou Meta Ads &agrave; nous
-        partager en attendant, &ccedil;a acc&eacute;l&egrave;re l'analyse.
-      </p>
-      <p style="font-size:16px;line-height:1.6;margin:24px 0 0;">
-        &Agrave; tr&egrave;s vite,<br>
-        <strong>L'&eacute;quipe So Fresh Ads</strong>
+
+      <div style="color:rgba(26,20,16,0.2);font-size:13px;letter-spacing:0.1em;margin:20px 0;">&#9670;&nbsp;&nbsp;&#9670;&nbsp;&nbsp;&#9670;</div>
+
+      <p style="font-family:'Inter',Helvetica,Arial,sans-serif;color:#1A1410;font-size:15px;line-height:1.7;margin:0;">
+        Un lien direct vers vos comptes Google&nbsp;Ads ou Meta&nbsp;Ads &agrave; nous partager
+        en attendant&nbsp;? &Ccedil;a acc&eacute;l&egrave;re l'analyse.
       </p>
     </div>
-    <p style="text-align:center;font-size:12px;color:#6B5F53;margin-top:24px;">
-      So Fresh Ads &middot; www.sofreshads.com
+
+    <p class="sfa-serif" style="font-family:'Playfair Display',Georgia,serif;font-style:italic;color:#1A1410;font-size:16px;text-align:center;margin:28px 0 0;">
+      &Agrave; tr&egrave;s vite,<br>
+      <strong style="font-style:normal;">L'&eacute;quipe So Fresh Ads</strong>
+    </p>
+
+    <p style="text-align:center;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#6B5F53;margin-top:36px;">
+      So Fresh Ads &nbsp;&#9670;&nbsp; Cocktails de campagnes publicitaires
+    </p>
+    <p style="text-align:center;font-size:11px;color:rgba(107,95,83,0.7);margin-top:6px;">
+      <a href="https://www.sofreshads.com" style="color:rgba(107,95,83,0.7);text-decoration:underline;">www.sofreshads.com</a>
     </p>
   </div>
 </body>
